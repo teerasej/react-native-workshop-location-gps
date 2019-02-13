@@ -48,7 +48,7 @@ export default class App extends React.Component {
       return <Expo.AppLoading />;
     }
 
-    
+    let report;
 
     return (
 
