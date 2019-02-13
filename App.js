@@ -18,7 +18,7 @@ import {
   Input,
   Label
 } from "native-base";
-import { Location, Permissions } from 'expo';
+
 
 export default class App extends React.Component {
 
