@@ -48,23 +48,7 @@ export default class App extends React.Component {
       return <Expo.AppLoading />;
     }
 
-    let report;
-
-    if (this.state.location) {
-      report = (
-        <View>
-          <Text>Latitude: {this.state.location.coords.latitude}</Text>
-          <Text>longitude: {this.state.location.coords.longitude}</Text>
-          <Text>error: {this.state.errorMessage}</Text>
-        </View>
-      )
-    } else {
-      report = (
-        <View>
-          <Text>กดปุ่มเพื่อดึงข้อมูล</Text>
-        </View>
-      )
-    }
+    
 
     return (
 
