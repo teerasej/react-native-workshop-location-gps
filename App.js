@@ -1,0 +1,112 @@
+import React from "react";
+import { StyleSheet, View, Alert } from "react-native";
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Text,
+  Form,
+  Item,
+  Input,
+  Label
+} from "native-base";
+import { Location, Permissions } from 'expo';
+
+export default class App extends React.Component {
+
+  state = {
+    location: null,
+    errorMessage: null,
+    loading: true,
+  };
+
+
+  constructor(props) {
+    super(props);
+  }
+
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+    });
+    this.setState({ loading: false });
+  }
+
+
+  render() {
+    if (this.state.loading) {
+      return <Expo.AppLoading />;
+    }
+
+    let report;
+
+    if (this.state.location) {
+      report = (
+        <View>
+          <Text>Latitude: {this.state.location.coords.latitude}</Text>
+          <Text>longitude: {this.state.location.coords.longitude}</Text>
+          <Text>error: {this.state.errorMessage}</Text>
+        </View>
+      )
+    } else {
+      report = (
+        <View>
+          <Text>กดปุ่มเพื่อดึงข้อมูล</Text>
+        </View>
+      )
+    }
+
+    return (
+
+      <Container>
+        <Header>
+          <Body>
+            <Title>Nextflow GPS</Title>
+          </Body>
+        </Header>
+
+        <Content style={styles.content}>
+
+          <Button block onPress={() => { this.getPosition() }}>
+            <Text>
+              Get GPS
+            </Text>
+          </Button>
+          {report}
+        </Content>
+
+      </Container>
+
+    );
+  }
+
+  async getPosition() {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+    this.setState({ location });
+  }
+}
+
+const styles = StyleSheet.create({
+  content: {
+    padding: 10
+  }
+})
